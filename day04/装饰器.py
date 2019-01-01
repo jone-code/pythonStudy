@@ -14,18 +14,29 @@
 '''
 import time
 
-def timmer(func):
-    def warpper(*args,**kwargs):
+def timer(func):
+    def innerFunc(*args,**kwargs):
         start_time = time.time()
         print("the func begin time is %s" %(start_time))
-        func()
+        func(*args,**kwargs)
+        #如果装饰的方法需要返回值
+        #res =  func(*args,**kwargs)
+        #return res
         stop_time = time.time()
         print("the func end time is %s" %(stop_time))
-    return warpper
+    return innerFunc  # 其实这里返回的是方法的内存地址
 
-@timmer
-def test1():
+@timer
+def test1(name):
     print("begin....")
+    print(name)
     time.sleep(3)
     print("end....")
-test1()
+'''
+@timer 相当于是这个  就是把原来的test1 方法用timer 装饰一下
+test1 = timer(test1);
+
+其实调用的test1 已经是在调用 timer 中的内嵌方法 innerFunc 
+内嵌方法 innerFunc 加参数  其实也是配合 想要装饰的方法要传参的情况
+'''
+test1(123)
